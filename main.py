@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-
+import data_scraper
 
 with open('dates.txt', 'r') as file:
     dates = file.readlines()
@@ -17,23 +17,14 @@ with open('temp.txt', 'r') as file:
     temp = file.readlines()
 
 angles_values = []
-speed_values = []
-gust_values = []
 temp_values = []
 for i in angles:
     angles_values.append(i)
 for i in temp:
     temp_values.append(i + "°")
-for line in data:
-    values = line.strip().split()
-    for val in values:
-        if val.strip():
-            if len(speed_values) == len(gust_values):
-                speed_values.append(float(val))
-            else:
-                gust_values.append(float(val))
 
-# Ensure dates list matches the length of the data
+speed_values=(data[0].split(" "))
+gust_values=(data[1].split(" "))
 if len(dates) > len(speed_values):
     dates = dates[:len(speed_values)]
 elif len(dates) < len(speed_values):
@@ -46,10 +37,13 @@ if len(temp_values) > len(speed_values):
     temp_values = temp_values[:len(speed_values)]
 elif len(temp_values) < len(speed_values):
     temp_values += [''] * (len(speed_values) - len(temp_values))
+if len(gust_values) > len(speed_values):
+    gust_values = gust_values[:len(speed_values)]
+elif len(gust_values) < len(speed_values):
+    gust_values += [''] * (len(speed_values) - len(gust_values))
 
 def main():
     st.title("Thor Wind Website")
-
     with st.spinner("Loading data..."):
         import data_scraper
 
