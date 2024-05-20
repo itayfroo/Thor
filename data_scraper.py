@@ -7,6 +7,7 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(options=chrome_options)
 
+
 def scrape_data(page_url):
     driver.get(page_url)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "tabulka")))
@@ -71,8 +72,32 @@ def scrape_data(page_url):
     with open('temp.txt', 'r') as a:
         values = a.read().split()
     temp_lines = list(map(str, values))
+
+    # Scrape data from the new webpage
+    driver.get("https://gosurf.co.il/forecast/olga")
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "waves")))
+
+    wave_lines = []
+    wave_elements = driver.find_elements(By.CLASS_NAME, "waves")
+    for wave_element in wave_elements:
+        try:
+            wave_text = wave_element.text
+            wave_lines.append(wave_text)
+        except Exception as e:
+            print(f"Error extracting wave data: {e}")
+
+    # Extract hour data
+    hour_lines = []
+    hour_elements = driver.find_elements(By.CLASS_NAME, "hour")
+    for hour_element in hour_elements:
+        try:
+            hour_text = hour_element.text
+            hour_lines.append(hour_text)
+        except Exception as e:
+            print(f"Error extracting hour data: {e}")
+
     driver.quit()
-    return speed_and_gust_lines, category_group_lines, direction_lines, temp_lines
+    return speed_and_gust_lines, category_group_lines, direction_lines, temp_lines, wave_lines, hour_lines
 
 
 # Function to extract first and fifth lines from a list and return them
@@ -84,10 +109,11 @@ def extract_first_and_fifth_lines(lines):
         lines_to_keep.append(lines[4].strip())
     return lines_to_keep
 
+
 url = "https://www.windguru.cz/910318"
 
 # Scrape data
-speed_and_gust_lines, category_group_lines, direction_lines, temp_lines = scrape_data(url)
+speed_and_gust_lines, category_group_lines, direction_lines, temp_lines, wave_lines, hour_lines = scrape_data(url)
 
 lines_to_keep = extract_first_and_fifth_lines(speed_and_gust_lines)
 
@@ -105,4 +131,12 @@ with open("angles.txt", "w", encoding="utf-8") as file:
 
 with open("temp.txt", "w", encoding="utf-8") as file:
     for line in temp_lines:
+        file.write(line + "\n")
+
+with open("waves.txt", "w", encoding="utf-8") as file:
+    for line in wave_lines:
+        file.write(line + "\n")
+
+with open("hours.txt", "w", encoding="utf-8") as file:
+    for line in hour_lines:
         file.write(line + "\n")
