@@ -119,9 +119,6 @@
 18h Tu 4.
 21h We 5.
 Mo 20.
-03h Mo 20.
-05h Mo 20.
-07h Mo 20.
 09h Mo 20.
 11h Mo 20.
 13h Mo 20.
@@ -153,7 +150,8 @@ Mo 20.
 05h Th 23.
 07h Th 23.
 09h Th 23.
-12h Th 23.
+11h Th 23.
+13h Th 23.
 15h Th 23.
 18h Th 23.
 21h Fr 24.

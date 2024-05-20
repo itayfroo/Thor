@@ -1,0 +1,17 @@
+
+.idea/misc.xml
+*.xml
+*.iml
+*.pyc
+*.xml
+*.json
+*.pyd
+/venv/Lib/site-packages/altair-5.3.0.dist-info
+*.py
+/venv
+*.xml
+*.iml
+*.xml
+*.iml
+.idea/misc.xml
+.idea/Thor.iml
